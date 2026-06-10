@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GULRISCH — PHARAOH GOLD · PHG Éditions · PHG Build IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8CC7A;
+    --gold-dark: #8B6914;
+    --black: #0A0A0A;
+    --black-2: #111111;
+    --black-3: #1A1A1A;
+    --white: #F5F0E8;
+    --white-dim: rgba(245,240,232,0.65);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--black); color:var(--white); font-family:'Raleway',sans-serif; overflow-x:hidden; }
+
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.3;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  /* NAV */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    padding:1.4rem 4rem;
+    display:flex; align-items:center; justify-content:space-between;
+    background:linear-gradient(to bottom, rgba(10,10,10,0.98), transparent);
+    border-bottom:1px solid rgba(201,168,76,0.1);
+  }
+  .nav-logo { font-family:'Cinzel Decorative',serif; font-size:1rem; font-weight:700; color:var(--gold); text-decoration:none; letter-spacing:0.15em; }
+  .nav-logo span { color:var(--white-dim); font-size:0.62rem; display:block; letter-spacing:0.3em; font-family:'Raleway',sans-serif; font-weight:300; margin-top:2px; }
+  .nav-links { display:flex; gap:2rem; list-style:none; }
+  .nav-links a { color:var(--white-dim); text-decoration:none; font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase; font-weight:500; transition:color 0.3s; }
+  .nav-links a:hover { color:var(--gold); }
+  .nav-cta { border:1px solid var(--gold); color:var(--gold) !important; padding:0.45rem 1.2rem; transition:all 0.3s !important; }
+  .nav-cta:hover { background:var(--gold) !important; color:var(--black) !important; }
+
+  /* HERO */
+  #hero {
+    min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:8rem 2rem 5rem; position:relative; overflow:hidden;
+  }
+  .hero-bg {
+    position:absolute; inset:0;
+    background:radial-gradient(ellipse 80% 50% at 50% 60%, rgba(201,168,76,0.07) 0%, transparent 70%);
+  }
+  .hero-lines {
+    position:absolute; inset:0;
+    background-image:linear-gradient(rgba(201,168,76,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.04) 1px,transparent 1px);
+    background-size:60px 60px;
+    mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
+  }
+  .pyramid { width:80px; height:80px; margin:0 auto 2rem; animation:float 4s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .hero-eyebrow { font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.5em; color:var(--gold); text-transform:uppercase; margin-bottom:1.2rem; opacity:0; animation:fadeUp 0.8s 0.2s forwards; }
+  .hero-title { font-family:'Cinzel Decorative',serif; font-size:clamp(3rem,8vw,6rem); font-weight:900; line-height:1; letter-spacing:0.05em; margin-bottom:0.3rem; opacity:0; animation:fadeUp 0.8s 0.4s forwards; }
+  .hero-title .gold { color:var(--gold); }
+  .hero-sub { font-family:'Cinzel',serif; font-size:clamp(0.8rem,1.5vw,1.1rem); letter-spacing:0.4em; color:var(--white-dim); margin-bottom:2rem; text-transform:uppercase; opacity:0; animation:fadeUp 0.8s 0.6s forwards; }
+  .hero-desc { max-width:540px; font-size:0.95rem; line-height:1.85; color:var(--white-dim); margin:0 auto 2.5rem; font-weight:300; opacity:0; animation:fadeUp 0.8s 0.8s forwards; }
+  .hero-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; opacity:0; animation:fadeUp 0.8s 1s forwards; }
+  .scroll-hint { position:absolute; bottom:2rem; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:0.4rem; opacity:0; animation:fadeUp 1s 1.5s forwards; }
+  .scroll-hint span { font-size:0.55rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); }
+  .scroll-line { width:1px; height:35px; background:linear-gradient(to bottom,var(--gold),transparent); animation:scrollPulse 2s ease-in-out infinite; }
+  @keyframes scrollPulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+  /* BUTTONS */
+  .btn-primary { background:var(--gold); color:var(--black); padding:0.85rem 2.2rem; font-family:'Cinzel',serif; font-size:0.72rem; font-weight:700; letter-spacing:0.25em; text-transform:uppercase; text-decoration:none; border:none; cursor:pointer; transition:all 0.3s; clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%); display:inline-block; }
+  .btn-primary:hover { background:var(--gold-light); transform:translateY(-2px); box-shadow:0 10px 30px rgba(201,168,76,0.25); }
+  .btn-outline { background:transparent; color:var(--white); padding:0.85rem 2.2rem; font-family:'Cinzel',serif; font-size:0.72rem; font-weight:600; letter-spacing:0.25em; text-transform:uppercase; text-decoration:none; border:1px solid rgba(255,255,255,0.2); cursor:pointer; transition:all 0.3s; clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%); display:inline-block; }
+  .btn-outline:hover { border-color:var(--gold); color:var(--gold); }
+  .btn-amazon { background:#FF9900; color:#111; padding:0.7rem 1.4rem; font-family:'Cinzel',serif; font-size:0.65rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; text-decoration:none; border:none; cursor:pointer; transition:all 0.3s; display:inline-flex; align-items:center; gap:0.5rem; }
+  .btn-amazon:hover { background:#FFAC30; transform:translateY(-1px); }
+  .btn-lulu { background:transparent; color:var(--gold); padding:0.7rem 1.4rem; font-family:'Cinzel',serif; font-size:0.65rem; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; text-decoration:none; border:1px solid var(--gold); cursor:pointer; transition:all 0.3s; display:inline-flex; align-items:center; gap:0.5rem; }
+  .btn-lulu:hover { background:var(--gold); color:var(--black); }
+
+  /* SECTIONS */
+  .section-wrap { padding:6rem 4rem; max-width:1200px; margin:0 auto; }
+  .section-label { font-family:'Cinzel',serif; font-size:0.62rem; letter-spacing:0.5em; color:var(--gold); text-transform:uppercase; margin-bottom:0.8rem; display:flex; align-items:center; gap:0.8rem; }
+  .section-label::before { content:''; width:25px; height:1px; background:var(--gold); }
+  .section-title { font-family:'Cinzel Decorative',serif; font-size:clamp(1.6rem,3.5vw,2.5rem); font-weight:700; line-height:1.2; margin-bottom:1rem; }
+  .section-title .gold { color:var(--gold); }
+
+  /* STATS */
+  .stats-bar { display:flex; justify-content:center; gap:5rem; padding:2.5rem 4rem; border-top:1px solid rgba(201,168,76,0.1); border-bottom:1px solid rgba(201,168,76,0.1); background:var(--black-2); }
+  .stat { text-align:center; }
+  .stat-number { font-family:'Cinzel Decorative',serif; font-size:2rem; font-weight:900; color:var(--gold); line-height:1; margin-bottom:0.25rem; }
+  .stat-label { font-size:0.62rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--white-dim); font-weight:300; }
+
+  /* DIVIDER */
+  .divider { display:flex; align-items:center; gap:1.5rem; padding:0 4rem; max-width:1200px; margin:0 auto; }
+  .divider-line { flex:1; height:1px; background:linear-gradient(to right,transparent,var(--gold),transparent); }
+  .divider-icon { color:var(--gold); font-size:1rem; }
+
+  /* BUILD IA */
+  .build-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; margin-top:2.5rem; }
+  .build-badge { display:inline-flex; align-items:center; gap:0.5rem; background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.25); padding:0.35rem 1rem; font-size:0.62rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); font-family:'Cinzel',serif; margin-bottom:1.5rem; }
+  .build-badge::before { content:''; width:6px; height:6px; background:var(--gold); border-radius:50%; animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+  .build-text p { color:var(--white-dim); line-height:1.85; font-size:0.9rem; margin-bottom:1.2rem; font-weight:300; }
+  .modules-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.9rem; }
+  .module-card { background:var(--black-3); border:1px solid rgba(201,168,76,0.12); padding:1.1rem; transition:all 0.3s; position:relative; overflow:hidden; }
+  .module-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--gold); transform:scaleY(0); transition:transform 0.3s; transform-origin:bottom; }
+  .module-card:hover { border-color:rgba(201,168,76,0.35); transform:translateY(-2px); }
+  .module-card:hover::before { transform:scaleY(1); }
+  .module-icon { font-size:1.2rem; margin-bottom:0.4rem; }
+  .module-name { font-family:'Cinzel',serif; font-size:0.68rem; font-weight:600; letter-spacing:0.1em; color:var(--gold); margin-bottom:0.25rem; }
+  .module-desc { font-size:0.72rem; color:var(--white-dim); line-height:1.5; font-weight:300; }
+
+  /* LIVRES */
+  .livres-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2.5rem; }
+  .livres-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; }
+
+  .book-card { cursor:pointer; }
+  .book-cover {
+    aspect-ratio:2/3; background:var(--black-3); border:1px solid rgba(201,168,76,0.18);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:1.5rem; text-align:center; position:relative; overflow:hidden;
+    margin-bottom:1rem; transition:all 0.4s;
+  }
+  .book-card:hover .book-cover { border-color:rgba(201,168,76,0.5); transform:translateY(-4px); box-shadow:0 16px 40px rgba(0,0,0,0.5); }
+  .book-cover::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(201,168,76,0.06) 0%,transparent 60%); }
+  .book-cover-ornament { position:absolute; top:12px; left:12px; right:12px; bottom:12px; border:1px solid rgba(201,168,76,0.12); pointer-events:none; }
+  .book-cover-title { font-family:'Cinzel Decorative',serif; font-size:0.88rem; font-weight:700; color:var(--gold); line-height:1.4; margin-bottom:0.5rem; position:relative; z-index:1; }
+  .book-cover-sub { font-size:0.65rem; color:var(--white-dim); line-height:1.5; font-weight:300; position:relative; z-index:1; }
+  .book-cover-bar { position:absolute; bottom:0; left:0; right:0; height:3px; background:linear-gradient(to right,transparent,var(--gold),transparent); }
+  .book-cover-phg { position:absolute; top:1rem; right:1rem; font-family:'Cinzel',serif; font-size:0.5rem; letter-spacing:0.2em; color:rgba(201,168,76,0.4); z-index:1; }
+
+  .book-info { padding:0 0.2rem; }
+  .book-info-title { font-family:'Cinzel',serif; font-size:0.82rem; font-weight:600; margin-bottom:0.25rem; }
+  .book-info-meta { font-size:0.7rem; color:var(--white-dim); font-weight:300; margin-bottom:0.8rem; }
+  .book-info-price { font-size:0.9rem; color:var(--gold); font-weight:600; margin-bottom:0.8rem; font-family:'Cinzel',serif; }
+  .book-btns { display:flex; gap:0.5rem; flex-wrap:wrap; }
+
+  /* COMING SOON OVERLAY */
+  .book-coming { position:relative; }
+  .book-coming .book-cover::after { content:'BIENTÔT'; position:absolute; inset:0; background:rgba(10,10,10,0.7); display:flex; align-items:center; justify-content:center; font-family:'Cinzel',serif; font-size:0.7rem; letter-spacing:0.4em; color:var(--gold); }
+
+  /* PRICING */
+  .pricing-section { background:var(--black-2); padding:6rem 0; }
+  .pricing-inner { max-width:1200px; margin:0 auto; padding:0 4rem; }
+  .pricing-header { text-align:center; margin-bottom:3rem; }
+  .pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:2.5rem; }
+  .price-card { background:var(--black-3); border:1px solid rgba(201,168,76,0.15); padding:2.2rem 1.8rem; text-align:center; position:relative; transition:all 0.3s; }
+  .price-card.featured { border-color:var(--gold); background:linear-gradient(135deg,var(--black-3),rgba(201,168,76,0.04)); }
+  .price-card.featured::before { content:'RECOMMANDÉ'; position:absolute; top:-1px; left:50%; transform:translateX(-50%); background:var(--gold); color:var(--black); font-family:'Cinzel',serif; font-size:0.55rem; letter-spacing:0.2em; padding:0.28rem 1rem; font-weight:700; white-space:nowrap; }
+  .price-card:hover { transform:translateY(-4px); box-shadow:0 20px 40px rgba(0,0,0,0.4); }
+  .price-tier { font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.4em; color:var(--gold); text-transform:uppercase; margin-bottom:1.2rem; }
+  .price-amount { font-family:'Cinzel Decorative',serif; font-size:2.8rem; font-weight:900; line-height:1; margin-bottom:0.3rem; }
+  .price-period { font-size:0.72rem; color:var(--white-dim); margin-bottom:1.8rem; font-weight:300; }
+  .price-alt { font-size:0.65rem; color:rgba(201,168,76,0.6); margin-top:0.2rem; }
+  .price-features { list-style:none; text-align:left; margin-bottom:1.8rem; }
+  .price-features li { font-size:0.78rem; color:var(--white-dim); padding:0.45rem 0; border-bottom:1px solid rgba(255,255,255,0.04); display:flex; align-items:center; gap:0.6rem; font-weight:300; }
+  .price-features li::before { content:'◈'; color:var(--gold); font-size:0.55rem; flex-shrink:0; }
+
+  /* MEDIA SECTION */
+  .media-section { background:var(--black-2); }
+  .media-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:2.5rem; }
+  .media-card { background:var(--black-3); border:1px solid rgba(201,168,76,0.12); overflow:hidden; }
+  .media-card-header { padding:1rem 1.2rem; border-bottom:1px solid rgba(201,168,76,0.1); display:flex; align-items:center; gap:0.7rem; }
+  .media-platform { font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.2em; color:var(--gold); text-transform:uppercase; }
+  .media-platform-icon { font-size:1rem; }
+  .media-embed { aspect-ratio:16/9; background:var(--black); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+  .media-embed iframe { width:100%; height:100%; border:none; }
+  .media-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.8rem; width:100%; height:100%; background:linear-gradient(135deg,var(--black-3),var(--black)); }
+  .media-placeholder-icon { font-size:2.5rem; opacity:0.4; }
+  .media-placeholder-text { font-size:0.7rem; letter-spacing:0.2em; color:var(--white-dim); text-align:center; line-height:1.6; font-family:'Cinzel',serif; }
+  .media-placeholder-link { font-size:0.65rem; color:var(--gold); text-decoration:none; letter-spacing:0.15em; border:1px solid rgba(201,168,76,0.3); padding:0.4rem 1rem; transition:all 0.3s; font-family:'Cinzel',serif; }
+  .media-placeholder-link:hover { background:var(--gold); color:var(--black); }
+
+  /* NEWSLETTER */
+  .newsletter-wrap { max-width:680px; margin:0 auto 6rem; border:1px solid rgba(201,168,76,0.2); background:linear-gradient(135deg,var(--black-3),rgba(201,168,76,0.04)); padding:3.5rem; text-align:center; position:relative; overflow:hidden; }
+  .newsletter-wrap::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:radial-gradient(ellipse at center,rgba(201,168,76,0.03) 0%,transparent 60%); }
+  .newsletter-title { font-family:'Cinzel Decorative',serif; font-size:1.6rem; margin-bottom:0.6rem; position:relative; }
+  .newsletter-desc { color:var(--white-dim); font-size:0.85rem; line-height:1.75; margin-bottom:1.8rem; font-weight:300; position:relative; }
+  .email-form { display:flex; max-width:420px; margin:0 auto; position:relative; }
+  .email-input { flex:1; background:var(--black); border:1px solid rgba(201,168,76,0.3); border-right:none; color:var(--white); padding:0.85rem 1rem; font-family:'Raleway',sans-serif; font-size:0.82rem; outline:none; transition:border-color 0.3s; }
+  .email-input:focus { border-color:var(--gold); }
+  .email-input::placeholder { color:rgba(245,240,232,0.25); }
+  .email-btn { background:var(--gold); color:var(--black); border:none; padding:0.85rem 1.3rem; font-family:'Cinzel',serif; font-size:0.65rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; transition:background 0.3s; }
+  .email-btn:hover { background:var(--gold-light); }
+  .email-note { font-size:0.65rem; color:var(--white-dim); margin-top:0.8rem; font-weight:300; position:relative; }
+
+  /* FOOTER */
+  .footer-wrap { border-top:1px solid rgba(201,168,76,0.12); }
+  .footer-inner { max-width:1200px; margin:0 auto; padding:2.5rem 4rem; display:flex; align-items:center; justify-content:space-between; }
+  .footer-logo { font-family:'Cinzel Decorative',serif; font-size:0.95rem; color:var(--gold); }
+  .footer-logo span { color:var(--white-dim); font-size:0.6rem; display:block; font-family:'Raleway',sans-serif; font-weight:300; letter-spacing:0.2em; margin-top:2px; }
+  .footer-links { display:flex; gap:2rem; list-style:none; }
+  .footer-links a { font-size:0.68rem; color:var(--white-dim); text-decoration:none; letter-spacing:0.1em; transition:color 0.3s; }
+  .footer-links a:hover { color:var(--gold); }
+  .footer-copy { font-size:0.65rem; color:rgba(245,240,232,0.35); font-weight:300; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .reveal { opacity:0; transform:translateY(28px); transition:all 0.75s cubic-bezier(0.25,0.46,0.45,0.94); }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  /* RESPONSIVE */
+  @media(max-width:900px){
+    nav{padding:1.2rem 1.5rem;}
+    .nav-links{display:none;}
+    .section-wrap{padding:4rem 1.5rem;}
+    .build-grid,.livres-grid,.media-grid{grid-template-columns:1fr;}
+    .modules-grid{grid-template-columns:1fr 1fr;}
+    .pricing-grid{grid-template-columns:1fr;max-width:380px;margin:0 auto;}
+    .stats-bar{gap:1.5rem;flex-wrap:wrap;padding:2rem 1.5rem;}
+    .footer-inner{flex-direction:column;gap:1.2rem;text-align:center;padding:2rem 1.5rem;}
+    .divider{padding:0 1.5rem;}
+    .newsletter-wrap{margin:0 1.5rem 4rem;padding:2.5rem 1.5rem;}
+    .email-form{flex-direction:column;}
+    .email-input{border-right:1px solid rgba(201,168,76,0.3);border-bottom:none;}
+    .pricing-inner{padding:0 1.5rem;}
+    .livres-header{flex-direction:column;align-items:flex-start;gap:1rem;}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span style="font-size:0.5rem;color:rgba(201,168,76,0.5);letter-spacing:0.5em;font-family:Raleway,sans-serif;display:block;margin-bottom:2px;">GULRISCH GROUP</span>
+    PHARAOH GOLD
+    <span>PHG Éditions · PHG Build IA</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#build">Build IA</a></li>
+    <li><a href="#livres">Livres</a></li>
+    <li><a href="#mind">PHG Mind</a></li>
+    <li><a href="#media">Médias</a></li>
+    <li><a href="#pricing">Tarifs</a></li>
+    <li><a href="#newsletter" class="nav-cta">Accès Bêta</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="pyramid">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="50,5 95,95 5,95" fill="none" stroke="#C9A84C" stroke-width="2"/>
+      <polygon points="50,22 78,85 22,85" fill="rgba(201,168,76,0.07)" stroke="#C9A84C" stroke-width="1"/>
+      <line x1="50" y1="5" x2="50" y2="95" stroke="rgba(201,168,76,0.25)" stroke-width="0.5"/>
+      <circle cx="50" cy="43" r="7" fill="rgba(201,168,76,0.12)" stroke="#C9A84C" stroke-width="1.5"/>
+      <circle cx="50" cy="43" r="2.5" fill="#C9A84C"/>
+      <line x1="5" y1="95" x2="95" y2="95" stroke="#C9A84C" stroke-width="2"/>
+    </svg>
+  </div>
+  <p style="font-family:Cinzel Decorative,serif;font-size:0.9rem;letter-spacing:0.4em;color:rgba(201,168,76,0.6);margin-bottom:0.3rem;opacity:0;animation:fadeUp 0.8s 0.1s forwards;">GULRISCH</p>
+  <p class="hero-eyebrow">PHARAOH GOLD · Fondé par Frédéric Richerd Goulia</p>
+  <h1 class="hero-title"><span class="gold">PHARAOH</span><br>GOLD</h1>
+  <p class="hero-sub">PHG Éditions · PHG Build IA</p>
+  <p class="hero-desc">Un écosystème unique alliant intelligence artificielle appliquée à la construction et édition francophone d'excellence — pour bâtir, créer et investir sans frontières.</p>
+  <div class="hero-btns">
+    <a href="#build" class="btn-primary">PHG Build IA</a>
+    <a href="#livres" class="btn-outline">Nos Livres</a>
+  </div>
+  <div class="scroll-hint">
+    <span>Découvrir</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar reveal">
+  <div class="stat"><div class="stat-number">7+</div><div class="stat-label">Livres Publiés</div></div>
+  <div class="stat"><div class="stat-number">4</div><div class="stat-label">Langues</div></div>
+  <div class="stat"><div class="stat-number">180+</div><div class="stat-label">Pays</div></div>
+  <div class="stat"><div class="stat-number">2</div><div class="stat-label">Plateformes de Vente</div></div>
+</div>
+
+<!-- BUILD IA -->
+<div class="section-wrap" id="build">
+  <div class="build-grid">
+    <div class="build-text reveal">
+      <div class="section-label">Plateforme SaaS</div>
+      <h2 class="section-title">PHG <span class="gold">Build IA</span></h2>
+      <div class="build-badge">Bêta ouverte · Accès limité</div>
+      <p>La première plateforme intelligente de gestion de chantier pour quiconque construit à distance ou à l'international. De l'architecte IA à la supervision satellitaire, tout est centralisé.</p>
+      <p>Que vous bâtissiez en Europe, en Afrique ou n'importe où dans le monde — PHG Build IA vous donne les outils d'un professionnel, sans frontières.</p>
+      <div style="margin-top:1.8rem;display:flex;gap:1rem;flex-wrap:wrap;">
+        <a href="#newsletter" class="btn-primary">Rejoindre la Bêta</a>
+        <a href="#pricing" class="btn-outline">Voir les Tarifs</a>
+      </div>
+    </div>
+    <div class="modules-grid reveal">
+      <div class="module-card"><div class="module-icon">🏛️</div><div class="module-name">Architecte IA</div><div class="module-desc">Plans et devis générés par IA</div></div>
+      <div class="module-card"><div class="module-icon">📡</div><div class="module-name">PHG Radar</div><div class="module-desc">Supervision chantier en temps réel</div></div>
+      <div class="module-card"><div class="module-icon">🎨</div><div class="module-name">Décoration IA</div><div class="module-desc">Simulation peinture & aménagement</div></div>
+      <div class="module-card"><div class="module-icon">💱</div><div class="module-name">Transfert International</div><div class="module-desc">Financer votre chantier depuis l'étranger</div></div>
+      <div class="module-card"><div class="module-icon">📊</div><div class="module-name">Simulateur d'Économies</div><div class="module-desc">Estimez vos économies par projet</div></div>
+      <div class="module-card"><div class="module-icon">📅</div><div class="module-name">Planning Gantt</div><div class="module-desc">Timeline de construction interactive</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider reveal"><div class="divider-line"></div><div class="divider-icon">◈</div><div class="divider-line"></div></div>
+
+<!-- LIVRES -->
+<div class="section-wrap" id="livres">
+  <div class="livres-header reveal">
+    <div>
+      <div class="section-label">PHG Éditions</div>
+      <h2 class="section-title">Catalogue <span class="gold">Publications</span></h2>
+    </div>
+    <a href="https://www.amazon.fr/s?i=stripbooks&rh=p_27%3APharaoh+Gold" target="_blank" class="btn-outline" style="font-size:0.65rem;padding:0.6rem 1.4rem;">Tout voir sur Amazon →</a>
+  </div>
+
+  <!-- LIVRE 1 -->
+  <div class="livres-grid">
+    <div class="book-card reveal">
+      <div class="book-cover">
+        <div class="book-cover-phg">PHG</div>
+        <div class="book-cover-ornament"></div>
+        <div class="book-cover-title">La Violence<br>Humaine</div>
+        <div class="book-cover-sub">Roman · 571 pages · 6×9"</div>
+        <div class="book-cover-bar"></div>
+      </div>
+      <div class="book-info">
+        <div class="book-info-title">La Violence Humaine</div>
+        <div class="book-info-meta">Roman · Amazon KDP · ASIN B0DZ1CR6NM</div>
+        <div class="book-info-price">28,98 $</div>
+        <div class="book-btns">
+          <a href="https://www.amazon.com/dp/B0DZ1CR6NM" target="_blank" class="btn-amazon">🛒 Amazon</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVRE 2 -->
+    <div class="book-card reveal">
+      <div class="book-cover">
+        <div class="book-cover-phg">PHG</div>
+        <div class="book-cover-ornament"></div>
+        <div class="book-cover-title">L'Eldorado<br>des Ombres</div>
+        <div class="book-cover-sub">Fiction littéraire · 293 pages · A5</div>
+        <div class="book-cover-bar"></div>
+      </div>
+      <div class="book-info">
+        <div class="book-info-title">L'Eldorado des Ombres</div>
+        <div class="book-info-meta">Fiction · Lulu.com · ISBN 978-1-105-43956-8</div>
+        <div class="book-info-price">19,90 €</div>
+        <div class="book-btns">
+          <a href="https://www.lulu.com" target="_blank" class="btn-lulu">◈ Lulu.com</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVRE 3 -->
+    <div class="book-card reveal">
+      <div class="book-cover">
+        <div class="book-cover-phg">PHG</div>
+        <div class="book-cover-ornament"></div>
+        <div class="book-cover-title">La Loi de<br>la Semence</div>
+        <div class="book-cover-sub">Développement · 190 pages</div>
+        <div class="book-cover-bar"></div>
+      </div>
+      <div class="book-info">
+        <div class="book-info-title">La Loi de la Semence</div>
+        <div class="book-info-meta">Développement personnel · Amazon KDP · ASIN B0GV1X5JRW</div>
+        <div class="book-info-price">21,99 €</div>
+        <div class="book-btns">
+          <a href="https://www.amazon.com/dp/B0GV1X5JRW" target="_blank" class="btn-amazon">🛒 Amazon</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVRE 4 -->
+    <div class="book-card reveal">
+      <div class="book-cover">
+        <div class="book-cover-phg">PHG</div>
+        <div class="book-cover-ornament"></div>
+        <div class="book-cover-title">Le Grand<br>Secret</div>
+        <div class="book-cover-sub">325 pages · ISBN 9798253571033</div>
+        <div class="book-cover-bar"></div>
+      </div>
+      <div class="book-info">
+        <div class="book-info-title">Le Grand Secret</div>
+        <div class="book-info-meta">Spiritualité · Amazon KDP</div>
+        <div class="book-info-price">Disponible</div>
+        <div class="book-btns">
+          <a href="https://www.amazon.com/s?k=9798253571033" target="_blank" class="btn-amazon">🛒 Amazon</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVRE 5 -->
+    <div class="book-card reveal">
+      <div class="book-cover">
+        <div class="book-cover-phg">PHG</div>
+        <div class="book-cover-ornament"></div>
+        <div class="book-cover-title">Histoire de<br>François Goulia</div>
+        <div class="book-cover-sub">Finance · 256 pages</div>
+        <div class="book-cover-bar"></div>
+      </div>
+      <div class="book-info">
+        <div class="book-info-title">Histoire de François Goulia</div>
+        <div class="book-info-meta">Finance personnelle · Amazon KDP</div>
+        <div class="book-info-price">Disponible</div>
+        <div class="book-btns">
+          <a href="https://www.amazon.fr/s?i=stripbooks&rh=p_27%3APharaoh+Gold" target="_blank" class="btn-amazon">🛒 Amazon</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVRE 6 - ZAREK -->
+    <div class="book-card reveal">
+      <div class="book-cover">
+        <div class="book-cover-phg">PHG</div>
+        <div class="book-cover-ornament"></div>
+        <div class="book-cover-title">Les 48 Lois<br>de Zarek</div>
+        <div class="book-cover-sub">Roman stratégique · Empire d'Azyra</div>
+        <div class="book-cover-bar"></div>
+      </div>
+      <div class="book-info">
+        <div class="book-info-title">Les 48 Lois de Zarek l'Archiviste</div>
+        <div class="book-info-meta">Fiction · Amazon KDP · ASIN B0H22F32KK</div>
+        <div class="book-info-price">17,45 $</div>
+        <div class="book-btns">
+          <a href="https://www.amazon.com/dp/B0H22F32KK" target="_blank" class="btn-amazon">🛒 Amazon</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVRE 7 - COMING SOON -->
+    <div class="book-card book-coming reveal">
+      <div class="book-cover">
+        <div class="book-cover-phg">PHG</div>
+        <div class="book-cover-ornament"></div>
+        <div class="book-cover-title">L'Investisseur<br>Éclairé</div>
+        <div class="book-cover-sub">Finance · 571 pages · 2 volumes</div>
+        <div class="book-cover-bar"></div>
+      </div>
+      <div class="book-info">
+        <div class="book-info-title">L'Investisseur Éclairé</div>
+        <div class="book-info-meta">Finance & Investissement · Amazon KDP</div>
+        <div class="book-info-price" style="color:var(--white-dim);">En préparation</div>
+        <div class="book-btns">
+          <a href="#newsletter" class="btn-outline" style="font-size:0.62rem;padding:0.6rem 1rem;">Être notifié</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider reveal"><div class="divider-line"></div><div class="divider-icon">◈</div><div class="divider-line"></div></div>
+
+
+<!-- PHG MIND SECTION -->
+<section id="mind" style="max-width:100%;padding:6rem 0;background:var(--black);">
+<div style="max-width:1200px;margin:0 auto;padding:0 4rem;">
+  <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;">
+    <div>
+      <div class="section-label">Application PHG</div>
+      <h2 class="section-title">PHG <span class="gold">MIND</span></h2>
+      <p style="font-size:1.3rem;font-style:italic;color:var(--gold);font-family:Georgia,serif;margin-bottom:1.2rem;line-height:1.4;">Reprogramme ton esprit,<br>ton argent, ton avenir.</p>
+      <p style="color:var(--white-dim);font-size:0.9rem;line-height:1.85;font-weight:300;margin-bottom:1.5rem;">Libère ton plein potentiel grâce à des programmes de reprogrammation mentale conçus pour transformer ta vie en profondeur. Journal, affirmations, disciplines, coach IA 24h/24.</p>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:2rem;">
+        <div style="display:flex;align-items:center;gap:10px;font-size:0.82rem;color:var(--white-dim);">◈ <span>Le Livre complet — L'Homme Programmable</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:0.82rem;color:var(--white-dim);">◈ <span>Programmes de développement personnel</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:0.82rem;color:var(--white-dim);">◈ <span>Journal personnel & suivi d'humeur quotidien</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:0.82rem;color:var(--white-dim);">◈ <span>Affirmations & ancrage mental</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:0.82rem;color:var(--white-dim);">◈ <span>Coach IA PHG disponible 24h/24</span></div>
+      </div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <a href="#" class="btn-primary" style="clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">Accéder à PHG Mind</a>
+        <a href="#newsletter" class="btn-outline" style="clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">Version Premium</a>
+      </div>
+    </div>
+    <div>
+      <div style="background:var(--black-3);border:1px solid rgba(201,168,76,0.25);padding:2rem;">
+        <div style="font-family:Cinzel Decorative,serif;font-size:1.1rem;color:var(--gold);margin-bottom:0.5rem;">PHG MIND Premium</div>
+        <div style="font-size:0.7rem;color:var(--white-dim);letter-spacing:0.2em;margin-bottom:1.5rem;">TRANSFORMATION MENTALE COMPLÈTE</div>
+        <div style="font-family:Cinzel Decorative,serif;font-size:2.5rem;color:var(--gold);margin-bottom:0.3rem;">19,90€</div>
+        <div style="font-size:0.75rem;color:var(--white-dim);margin-bottom:1.5rem;">/mois · Résiliable à tout moment</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:1.5rem;">
+          <div style="font-size:0.78rem;color:var(--white-dim);display:flex;gap:8px;align-items:center;"><span style="color:var(--gold);">✓</span> Le Livre complet — L'Homme Programmable</div>
+          <div style="font-size:0.78rem;color:var(--white-dim);display:flex;gap:8px;align-items:center;"><span style="color:var(--gold);">✓</span> Tous les programmes de développement</div>
+          <div style="font-size:0.78rem;color:var(--white-dim);display:flex;gap:8px;align-items:center;"><span style="color:var(--gold);">✓</span> Suivi des disciplines au quotidien</div>
+          <div style="font-size:0.78rem;color:var(--white-dim);display:flex;gap:8px;align-items:center;"><span style="color:var(--gold);">✓</span> Affirmations & ancrage mental</div>
+          <div style="font-size:0.78rem;color:var(--white-dim);display:flex;gap:8px;align-items:center;"><span style="color:var(--gold);">✓</span> Maîtrise de soi — 4 piliers</div>
+          <div style="font-size:0.78rem;color:var(--white-dim);display:flex;gap:8px;align-items:center;"><span style="color:var(--gold);">✓</span> Coach IA PHG disponible 24h/24</div>
+        </div>
+        <a href="#newsletter" class="btn-primary" style="display:block;text-align:center;padding:0.9rem;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">Commencer maintenant →</a>
+        <p style="font-size:0.65rem;color:var(--white-dim);text-align:center;margin-top:0.8rem;">Paiement sécurisé par Stripe · Résiliable à tout moment</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider reveal"><div class="divider-line"></div><div class="divider-icon">◈</div><div class="divider-line"></div></div>
+<!-- MEDIA SECTION -->
+<div class="section-wrap media-section" id="media" style="max-width:100%;background:var(--black-2);padding:6rem 0;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 4rem;">
+    <div class="reveal">
+      <div class="section-label">Nos Chaînes</div>
+      <h2 class="section-title">PHG sur <span class="gold">YouTube & TikTok</span></h2>
+    </div>
+    <div class="media-grid" style="margin-top:2.5rem;">
+      <!-- YOUTUBE -->
+      <div class="media-card reveal">
+        <div class="media-card-header">
+          <span class="media-platform-icon">▶️</span>
+          <span class="media-platform">Pharaoh Gold · YouTube</span>
+        </div>
+        <div class="media-embed">
+          <!-- Remplacez YOUR_CHANNEL_ID par votre vrai ID YouTube -->
+          <div class="media-placeholder">
+            <div class="media-placeholder-icon">▶</div>
+            <div class="media-placeholder-text">Chaîne YouTube<br>PHARAOH GOLD<br><br>Investissement · Construction · Édition</div>
+            <a href="https://youtube.com/@PharaohGold" target="_blank" class="media-placeholder-link">Voir la chaîne →</a>
+          </div>
+        </div>
+      </div>
+      <!-- TIKTOK -->
+      <div class="media-card reveal">
+        <div class="media-card-header">
+          <span class="media-platform-icon">🎵</span>
+          <span class="media-platform">Pharaoh Gold · TikTok</span>
+        </div>
+        <div class="media-embed">
+          <div class="media-placeholder">
+            <div class="media-placeholder-icon" style="font-size:2rem;">♪</div>
+            <div class="media-placeholder-text">TikTok PHG<br>PHARAOH GOLD<br><br>Conseils · Livres · Build IA</div>
+            <a href="https://tiktok.com/@pharaohgold" target="_blank" class="media-placeholder-link">Suivre sur TikTok →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider reveal" style="padding:0 4rem;max-width:1200px;margin:0 auto;"><div class="divider-line"></div><div class="divider-icon">◈</div><div class="divider-line"></div></div>
+
+<!-- PRICING -->
+<div class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <div class="pricing-header reveal">
+      <div class="section-label" style="justify-content:center;">PHG Build IA · Accès</div>
+      <h2 class="section-title" style="text-align:center;">Choisissez votre <span class="gold">Plan</span></h2>
+      <p style="text-align:center;color:var(--white-dim);font-size:0.88rem;font-weight:300;max-width:460px;margin:0 auto;">Démarrez gratuitement. Évoluez à votre rythme.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card reveal">
+        <div class="price-tier">Gratuit</div>
+        <div class="price-amount" style="color:var(--white);">0<span style="font-size:1.5rem;">€</span></div>
+        <div class="price-period">Pour toujours</div>
+        <ul class="price-features">
+          <li>3 projets offerts</li>
+          <li>Modules de base</li>
+          <li>Accès communauté PHG</li>
+          <li>Support par email</li>
+        </ul>
+        <a href="#newsletter" class="btn-outline" style="display:block;text-align:center;padding:0.75rem;">Commencer</a>
+      </div>
+      <div class="price-card featured reveal">
+        <div class="price-tier">Pro</div>
+        <div class="price-amount"><span style="font-size:1.8rem;color:var(--gold-light);">9,90</span><span style="font-size:1.2rem;color:var(--gold);">€</span></div>
+        <div class="price-period">/mois<div class="price-alt">ou 50€/an — économisez 2 mois</div></div>
+        <ul class="price-features">
+          <li>Projets illimités</li>
+          <li>PHG Radar chantier</li>
+          <li>Architecte IA complet</li>
+          <li>4 langues (FR/AR/ES/EN)</li>
+          <li>Simulateur d'économies</li>
+          <li>Support prioritaire</li>
+        </ul>
+        <a href="#newsletter" class="btn-primary" style="display:block;text-align:center;padding:0.75rem;">Choisir Pro</a>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-tier">Élite</div>
+        <div class="price-amount"><span style="font-size:1.8rem;color:var(--gold-light);">20</span><span style="font-size:1.2rem;color:var(--gold);">€</span></div>
+        <div class="price-period">/mois<div class="price-alt">ou 180€/an — économisez 60€</div></div>
+        <ul class="price-features">
+          <li>Tout le plan Pro</li>
+          <li>Signature électronique</li>
+          <li>Transfert international guidé</li>
+          <li>Mode hors-ligne</li>
+          <li>API & intégrations tierces</li>
+          <li>Manager de projet dédié</li>
+          <li>Accès anticipé aux nouvelles fonctions</li>
+        </ul>
+        <a href="#newsletter" class="btn-outline" style="display:block;text-align:center;padding:0.75rem;">Choisir Élite</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NEWSLETTER / LEAD CAPTURE -->
+<div style="padding:6rem 4rem 0;max-width:1200px;margin:0 auto;" id="newsletter">
+  <div class="newsletter-wrap reveal">
+    <div class="section-label" style="justify-content:center;position:relative;">Rejoindre l'Empire PHG</div>
+    <h2 class="newsletter-title">Accès <span style="color:var(--gold);">Prioritaire</span></h2>
+    <p class="newsletter-desc">Bêta PHG Build IA · Avant-premières publications · Conseils exclusifs investissement & construction internationale</p>
+    <div class="email-form">
+      <input type="email" class="email-input" placeholder="votre@email.com">
+      <button class="email-btn" onclick="handleEmailSubmit()">Rejoindre →</button>
+    </div>
+    <p class="email-note">Aucun spam. Désabonnement en 1 clic.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer-wrap">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <span style="font-size:0.5rem;color:rgba(201,168,76,0.4);letter-spacing:0.5em;display:block;margin-bottom:3px;font-family:Raleway,sans-serif;">GULRISCH GROUP</span>
+      PHARAOH GOLD
+      <span>PHG Éditions · PHG Build IA · © 2026</span>
+    </div>
+    <p class="footer-copy">Saint-Julien-en-Genevois, France · Fondé par Frédéric Richerd Goulia</p>
+    <ul class="footer-links">
+      <li><a href="https://youtube.com/@PharaohGold" target="_blank">YouTube</a></li>
+      <li><a href="https://tiktok.com/@pharaohgold" target="_blank">TikTok</a></li>
+      <li><a href="https://www.amazon.fr/s?i=stripbooks&rh=p_27%3APharaoh+Gold" target="_blank">Amazon</a></li>
+      <li><a href="https://www.lulu.com" target="_blank">Lulu.com</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  // Reveal scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if(entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 70);
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Nav active
+  window.addEventListener('scroll', () => {
+    const links = document.querySelectorAll('.nav-links a');
+    let current = '';
+    document.querySelectorAll('[id]').forEach(sec => {
+      if(window.scrollY >= sec.offsetTop - 200) current = sec.id;
+    });
+    links.forEach(l => {
+      l.style.color = l.getAttribute('href') === '#'+current ? 'var(--gold)' : '';
+    });
+  });
+
+  // Email submit
+  function handleEmailSubmit() {
+    const input = document.querySelector('.email-input');
+    if(!input.value || !input.value.includes('@')) {
+      input.style.borderColor = '#ff4444';
+      setTimeout(() => input.style.borderColor = '', 2000);
+      return;
+    }
+    const btn = document.querySelector('.email-btn');
+    btn.textContent = '✓ Inscrit !';
+    btn.style.background = '#4CAF50';
+    input.value = '';
+    setTimeout(() => { btn.textContent = 'Rejoindre →'; btn.style.background = ''; }, 3000);
+  }
+
+  // Finance IA tabs
+  function switchFinTab(id) {
+    document.querySelectorAll('.fin-tab').forEach((t,i) => t.classList.toggle('fin-active', ['marches','strategies','crypto','flash'][i]===id));
+    document.querySelectorAll('.fin-panel').forEach(p => p.classList.remove('fin-show'));
+    document.getElementById('fp-'+id).classList.add('fin-show');
+    if(id==='strategies') renderFS('etf');
+    if(id==='crypto') renderCrypto('hodl');
+  }
+
+  // Stratégies Finance
+  const finStrats = {
+    etf:{title:"ETF Mondial",risk:"Faible",points:["Investissez dans 1 600+ entreprises via un ETF MSCI World (iShares Core MSCI World).","Rendement historique 8–10%/an sur 20 ans. Frais TER 0,20%.","DCA recommandé : même somme chaque mois, sans regarder le marché.","Accessible dès 50€/mois via PEA ou compte-titres."]},
+    dca:{title:"DCA — Investissement mensuel",risk:"Faible",points:["Investissez une somme fixe chaque mois automatiquement. Achetez plus quand les prix baissent.","Élimine le risque de mauvais timing. Approche recommandée par Warren Buffett.","300€/mois sur ETF MSCI World pendant 15 ans = ~100 000€ estimés à 8%/an.","Automatisez via Boursorama, Trade Republic ou Degiro."]},
+    dividende:{title:"Dividendes",risk:"Modéré",points:["Sélectionnez des entreprises versant 3–6% de dividendes : Total, LVMH, Unilever.","Réinvestissez les dividendes pour profiter des intérêts composés.","Diversifiez entre 10–15 entreprises de secteurs différents.","Objectif : revenus passifs couvrant vos charges en 10–15 ans."]},
+    or:{title:"Or & Matières premières",risk:"Modéré",points:["L'or atteint 3 240$/oz en 2025 — valeur refuge contre l'inflation et les crises.","Investissez via ETF or physique sans stocker de métal.","Allocation recommandée : 5–15% du portefeuille.","Combinez avec cuivre et lithium pour exposition complète."]},
+  };
+
+  function renderFS(key) {
+    const s = finStrats[key];
+    document.getElementById('fin-detail').innerHTML = `<div style="font-size:0.7rem;padding:3px 10px;border-radius:20px;background:rgba(201,168,76,0.15);color:var(--gold);display:inline-block;margin-bottom:10px;">Risque ${s.risk}</div><div style="font-size:1rem;font-weight:600;font-family:'Cinzel',serif;color:var(--gold);margin-bottom:12px;">${s.title}</div>${s.points.map(p=>`<div style="display:flex;gap:8px;margin-bottom:8px;font-size:0.82rem;color:var(--white-dim);line-height:1.6;"><span style="color:var(--gold);flex-shrink:0;">◈</span><span>${p}</span></div>`).join('')}`;
+  }
+
+  // Crypto
+  const cryptoStrats = {
+    hodl:{title:"HODL Long Terme",risk:"Faible",points:["Achetez Bitcoin/Ethereum et ne vendez pas peu importe les corrections. BTC rentable sur tout horizon 4+ ans.","Sécurisez sur Ledger hardware wallet. 'Not your keys, not your coins'","Objectif : vendre en 2026–2027 au pic du cycle, avant le bear market.","Performance HODL BTC 4 ans : x10 en 2020–2024."]},
+    dca:{title:"DCA Crypto mensuel",risk:"Faible",points:["Investissez 100–500€/mois en BTC automatiquement, le même jour chaque mois.","Sur 3 ans de DCA BTC, le prix moyen d'achat est toujours inférieur au prix de marché.","Automatisez sur Coinbase, Binance ou Kraken.","Allocation : 60% BTC / 30% ETH / 10% Solana."]},
+    staking:{title:"Staking — Revenus passifs",risk:"Modéré",points:["Stakez ETH sur Lido (stETH) : ~4%/an de rendement passif.","Solana staking : 6–8%/an sur des validateurs réputés (Marinade, Jito).","Earn Binance et Kraken : rendements 3–12%/an selon la crypto.","Risque : smart contract bugs et volatilité de la crypto sous-jacente."]},
+    altcoin:{title:"Altcoin Season",risk:"Élevé",points:["En bull market post-BTC ATH, les altcoins surperforment souvent BTC de 3x à 10x.","Cryptos 2025 : Solana (SOL), Chainlink (LINK), Render (RNDR), Sui (SUI).","Jamais plus de 5% du portefeuille sur un seul altcoin.","Prenez vos profits à +100%, +200%, +500%. Timing critique."]},
+  };
+
+  function renderCrypto(key) {
+    const s = cryptoStrats[key];
+    document.getElementById('crypto-detail').innerHTML = `<div style="font-size:0.7rem;padding:3px 10px;border-radius:20px;background:rgba(201,168,76,0.15);color:var(--gold);display:inline-block;margin-bottom:10px;">Risque ${s.risk}</div><div style="font-size:1rem;font-weight:600;font-family:'Cinzel',serif;color:var(--gold);margin-bottom:12px;">${s.title}</div>${s.points.map(p=>`<div style="display:flex;gap:8px;margin-bottom:8px;font-size:0.82rem;color:var(--white-dim);line-height:1.6;"><span style="color:var(--gold);flex-shrink:0;">◈</span><span>${p}</span></div>`).join('')}`;
+  }
+
+  // Simulateur
+  function updateSim() {
+    const C=parseInt(document.getElementById('sim-cap').value);
+    const M=parseInt(document.getElementById('sim-men').value);
+    const R=parseFloat(document.getElementById('sim-rate').value)/100;
+    const Y=parseInt(document.getElementById('sim-yrs').value);
+    document.getElementById('sv-cap').textContent=C.toLocaleString('fr-FR')+'€';
+    document.getElementById('sv-men').textContent=M.toLocaleString('fr-FR')+'€/mois';
+    document.getElementById('sv-rate').textContent=(R*100).toFixed(1)+'%';
+    document.getElementById('sv-yrs').textContent=Y+' ans';
+    const r=R/12, n=Y*12;
+    const fv=C*Math.pow(1+r,n)+M*(Math.pow(1+r,n)-1)/r;
+    const inv=C+M*n;
+    document.getElementById('sr-final').textContent=Math.round(fv).toLocaleString('fr-FR')+'€';
+    document.getElementById('sr-inv').textContent=Math.round(inv).toLocaleString('fr-FR')+'€';
+    document.getElementById('sr-gains').textContent='+'+Math.round(fv-inv).toLocaleString('fr-FR')+'€';
+  }
+
+  // Init - après chargement DOM
+  document.addEventListener("DOMContentLoaded", function() {
+    if(document.getElementById("fin-detail")) renderFS("etf");
+    if(document.getElementById("crypto-detail")) renderCrypto("hodl");
+    if(document.getElementById("sim-cap")) updateSim();
+  });
+</script>
+
+<!-- SECTION FINANCE IA -->
+<style>
+#finance { background:var(--black-2); }
+.fin-tab { background:transparent; border:none; padding:8px 16px; font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--white-dim); cursor:pointer; font-family:'Cinzel',serif; border-bottom:2px solid transparent; transition:all 0.3s; }
+.fin-active { color:var(--gold); border-bottom-color:var(--gold); }
+.fin-panel { display:none; }
+.fin-show { display:block; }
+.fin-strat-btn { padding:10px 12px; border:0.5px solid rgba(201,168,76,0.15); background:var(--black-3); cursor:pointer; text-align:left; transition:all 0.2s; }
+.fin-strat-btn:hover,.fin-strat-selected { border-color:var(--gold); background:rgba(201,168,76,0.05); }
+.fin-strat-name { font-size:0.75rem; font-weight:600; color:var(--gold); font-family:'Cinzel',serif; margin-bottom:3px; }
+.fin-strat-desc { font-size:0.68rem; color:var(--white-dim); }
+.sim-slider { width:100%; accent-color:var(--gold); }
+.sim-result { background:var(--black-3); border:0.5px solid rgba(201,168,76,0.2); padding:12px; text-align:center; }
+.sim-result-val { font-family:'Cinzel Decorative',serif; font-size:1.4rem; color:var(--gold); }
+.sim-result-label { font-size:0.65rem; color:var(--white-dim); letter-spacing:0.2em; text-transform:uppercase; margin-top:4px; }
+.market-pill { background:var(--black-3); border:0.5px solid rgba(201,168,76,0.15); padding:10px 14px; }
+.market-pill-name { font-size:0.68rem; color:var(--white-dim); margin-bottom:4px; }
+.market-pill-val { font-size:1rem; font-weight:600; color:var(--white); }
+.market-pill-chg { font-size:0.7rem; margin-top:2px; }
+.up-c { color:#2D7D3A; } .dn-c { color:#C0392B; }
+</style>
+
+<section id="finance" style="max-width:100%;padding:6rem 0;">
+<div style="max-width:1200px;margin:0 auto;padding:0 4rem;">
+  <div class="reveal">
+    <div class="section-label">PHG Finance IA</div>
+    <h2 class="section-title">Investissement & <span class="gold">Crypto</span></h2>
+    <p style="color:var(--white-dim);font-size:0.9rem;font-weight:300;margin-bottom:2rem;line-height:1.7;">Stratégies d'investissement mondiales propulsées par intelligence artificielle — marchés, crypto, simulateur de capital.</p>
+  </div>
+  <div style="border-bottom:1px solid rgba(201,168,76,0.15);margin-bottom:2rem;display:flex;gap:0;flex-wrap:wrap;" class="reveal">
+    <button class="fin-tab fin-active" onclick="switchFinTab('marches')">Marchés</button>
+    <button class="fin-tab" onclick="switchFinTab('strategies')">Stratégies</button>
+    <button class="fin-tab" onclick="switchFinTab('crypto')">Crypto</button>
+    <button class="fin-tab" onclick="switchFinTab('flash')">Flash Bourse</button>
+  </div>
+
+  <!-- MARCHÉS -->
+  <div class="fin-panel fin-show" id="fp-marches">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:1.5rem;">
+      <div class="market-pill"><div class="market-pill-name">S&P 500</div><div class="market-pill-val">7 444</div><div class="market-pill-chg up-c">+0,58%</div></div>
+      <div class="market-pill"><div class="market-pill-name">Nasdaq</div><div class="market-pill-val">26 402</div><div class="market-pill-chg up-c">+1,20%</div></div>
+      <div class="market-pill"><div class="market-pill-name">CAC 40</div><div class="market-pill-val">~7 900</div><div class="market-pill-chg dn-c">Sous pression</div></div>
+      <div class="market-pill"><div class="market-pill-name">DAX</div><div class="market-pill-val">24 474</div><div class="market-pill-chg up-c">+1,40%</div></div>
+      <div class="market-pill"><div class="market-pill-name">Or (XAU)</div><div class="market-pill-val">~3 240$</div><div class="market-pill-chg up-c">Valeur refuge</div></div>
+      <div class="market-pill"><div class="market-pill-name">Bitcoin</div><div class="market-pill-val">~103k$</div><div class="market-pill-chg up-c">Bull market</div></div>
+    </div>
+    <div style="background:var(--black-3);border:0.5px solid rgba(201,168,76,0.15);padding:1.5rem;">
+      <div style="font-family:'Cinzel',serif;font-size:0.8rem;color:var(--gold);margin-bottom:1rem;">Signaux PHG — Mai 2026</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--white-dim);">✅ ETF MSCI World — Continuer DCA</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--white-dim);">✅ Or — Renforcer position</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--white-dim);">✅ ETF Tech/IA — Momentum fort</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--white-dim);">⏳ Bitcoin — Conserver, DCA léger</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--white-dim);">⚠️ CAC 40 — Surveiller</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--white-dim);">✅ Ethereum — Accumulation</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STRATÉGIES -->
+  <div class="fin-panel" id="fp-strategies">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:1.5rem;">
+      <button class="fin-strat-btn fin-strat-selected" onclick="document.querySelectorAll('.fin-strat-btn').forEach(b=>b.classList.remove('fin-strat-selected'));this.classList.add('fin-strat-selected');renderFS('etf')"><div class="fin-strat-name">ETF Mondial</div><div class="fin-strat-desc">Diversification passive mondiale</div></button>
+      <button class="fin-strat-btn" onclick="document.querySelectorAll('.fin-strat-btn').forEach(b=>b.classList.remove('fin-strat-selected'));this.classList.add('fin-strat-selected');renderFS('dca')"><div class="fin-strat-name">DCA Régulier</div><div class="fin-strat-desc">Investissement mensuel automatique</div></button>
+      <button class="fin-strat-btn" onclick="document.querySelectorAll('.fin-strat-btn').forEach(b=>b.classList.remove('fin-strat-selected'));this.classList.add('fin-strat-selected');renderFS('dividende')"><div class="fin-strat-name">Dividendes</div><div class="fin-strat-desc">Revenus passifs réguliers</div></button>
+      <button class="fin-strat-btn" onclick="document.querySelectorAll('.fin-strat-btn').forEach(b=>b.classList.remove('fin-strat-selected'));this.classList.add('fin-strat-selected');renderFS('or')"><div class="fin-strat-name">Or & Matières</div><div class="fin-strat-desc">Valeur refuge anti-inflation</div></button>
+    </div>
+    <div id="fin-detail" style="background:var(--black-3);border:0.5px solid rgba(201,168,76,0.15);padding:1.5rem;"></div>
+    <div style="margin-top:1rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;">
+      <div><div style="font-size:0.7rem;color:var(--white-dim);margin-bottom:6px;">Capital initial (€)</div><input type="range" id="sim-cap" class="sim-slider" min="1000" max="100000" step="1000" value="10000" oninput="updateSim()"><div style="font-size:0.85rem;color:var(--gold);font-weight:600;" id="sv-cap">10 000€</div></div>
+      <div><div style="font-size:0.7rem;color:var(--white-dim);margin-bottom:6px;">Versement mensuel (€)</div><input type="range" id="sim-men" class="sim-slider" min="0" max="2000" step="50" value="300" oninput="updateSim()"><div style="font-size:0.85rem;color:var(--gold);font-weight:600;" id="sv-men">300€/mois</div></div>
+      <div><div style="font-size:0.7rem;color:var(--white-dim);margin-bottom:6px;">Rendement annuel (%)</div><input type="range" id="sim-rate" class="sim-slider" min="2" max="20" step="0.5" value="8" oninput="updateSim()"><div style="font-size:0.85rem;color:var(--gold);font-weight:600;" id="sv-rate">8%</div></div>
+      <div><div style="font-size:0.7rem;color:var(--white-dim);margin-bottom:6px;">Durée (années)</div><input type="range" id="sim-yrs" class="sim-slider" min="1" max="30" step="1" value="15" oninput="updateSim()"><div style="font-size:0.85rem;color:var(--gold);font-weight:600;" id="sv-yrs">15 ans</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:1rem;">
+      <div class="sim-result"><div class="sim-result-val" id="sr-final">—</div><div class="sim-result-label">Capital final</div></div>
+      <div class="sim-result"><div class="sim-result-val" id="sr-inv" style="color:var(--white);">—</div><div class="sim-result-label">Total investi</div></div>
+      <div class="sim-result"><div class="sim-result-val" id="sr-gains" style="color:#2D7D3A;">—</div><div class="sim-result-label">Gains générés</div></div>
+    </div>
+  </div>
+
+  <!-- CRYPTO -->
+  <div class="fin-panel" id="fp-crypto">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:1.5rem;">
+      <div class="market-pill"><div class="market-pill-name">Bitcoin (BTC)</div><div class="market-pill-val">~103 000$</div><div class="market-pill-chg up-c">ATH 126k$ — Jun 2025</div></div>
+      <div class="market-pill"><div class="market-pill-name">Ethereum (ETH)</div><div class="market-pill-val">~2 315$</div><div class="market-pill-chg up-c">Accumulation</div></div>
+      <div class="market-pill"><div class="market-pill-name">Solana (SOL)</div><div class="market-pill-val">~170$</div><div class="market-pill-chg up-c">DeFi fort</div></div>
+      <div class="market-pill"><div class="market-pill-name">XRP</div><div class="market-pill-val">~2,30$</div><div class="market-pill-chg up-c">Réglementaire +</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:1.5rem;">
+      <button class="fin-strat-btn fin-strat-selected" onclick="document.querySelectorAll('#fp-crypto .fin-strat-btn').forEach(b=>b.classList.remove('fin-strat-selected'));this.classList.add('fin-strat-selected');renderCrypto('hodl')"><div class="fin-strat-name">HODL Long Terme</div><div class="fin-strat-desc">Conserver BTC/ETH sans vendre</div></button>
+      <button class="fin-strat-btn" onclick="document.querySelectorAll('#fp-crypto .fin-strat-btn').forEach(b=>b.classList.remove('fin-strat-selected'));this.classList.add('fin-strat-selected');renderCrypto('dca')"><div class="fin-strat-name">DCA Crypto</div><div class="fin-strat-desc">Investissement mensuel auto</div></button>
+      <button class="fin-strat-btn" onclick="document.querySelectorAll('#fp-crypto .fin-strat-btn').forEach(b=>b.classList.remove('fin-strat-selected'));this.classList.add('fin-strat-selected');renderCrypto('staking')"><div class="fin-strat-name">Staking</div><div class="fin-strat-desc">Revenus passifs crypto</div></button>
+      <button class="fin-strat-btn" onclick="document.querySelectorAll('#fp-crypto .fin-strat-btn').forEach(b=>b.classList.remove('fin-strat-selected'));this.classList.add('fin-strat-selected');renderCrypto('altcoin')"><div class="fin-strat-name">Altcoin Season</div><div class="fin-strat-desc">Spéculation ciblée</div></button>
+    </div>
+    <div id="crypto-detail" style="background:var(--black-3);border:0.5px solid rgba(201,168,76,0.15);padding:1.5rem;"></div>
+  </div>
+
+  <!-- FLASH BOURSE -->
+  <div class="fin-panel" id="fp-flash">
+    <div style="font-family:'Cinzel',serif;font-size:0.7rem;color:var(--gold);letter-spacing:0.2em;margin-bottom:1rem;">Flash Bourse — 17 Mai 2026</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="background:var(--black-3);border-left:3px solid #2D7D3A;padding:12px 16px;"><div style="font-size:0.82rem;font-weight:500;color:var(--white);margin-bottom:4px;">IA — Moteur principal de Wall Street</div><div style="font-size:0.75rem;color:var(--white-dim);line-height:1.6;">Nasdaq +1,20% porté par les valeurs IA. Goldman Sachs : demande data centers x2 d'ici 2027.</div><div style="font-size:0.7rem;color:var(--gold);margin-top:5px;">→ ETF tech & infrastructure IA (BOTZ, QQQ)</div></div>
+      <div style="background:var(--black-3);border-left:3px solid #C0392B;padding:12px 16px;"><div style="font-size:0.82rem;font-weight:500;color:var(--white);margin-bottom:4px;">Conflit Iran — Facteur de risque persistant</div><div style="font-size:0.75rem;color:var(--white-dim);line-height:1.6;">FMI redoute croissance mondiale à 2% en cas d'extension. Pétrole Brent ~83$/baril.</div><div style="font-size:0.7rem;color:var(--gold);margin-top:5px;">→ Renforcer or (XAU) comme valeur refuge</div></div>
+      <div style="background:var(--black-3);border-left:3px solid #E67E22;padding:12px 16px;"><div style="font-size:0.82rem;font-weight:500;color:var(--white);margin-bottom:4px;">Bitcoin — Bull market post-halving</div><div style="font-size:0.75rem;color:var(--white-dim);line-height:1.6;">BTC consolide autour de 100–110k$ après ATH de 126 210$ en juin 2025. ETF BlackRock IBIT dépasse 50 Mds$.</div><div style="font-size:0.7rem;color:var(--gold);margin-top:5px;">→ Conserver positions, DCA progressif</div></div>
+      <div style="background:var(--black-3);border-left:3px solid #C0392B;padding:12px 16px;"><div style="font-size:0.82rem;font-weight:500;color:var(--white);margin-bottom:4px;">Défaillances entreprises — Record 2026</div><div style="font-size:0.75rem;color:var(--white-dim);line-height:1.6;">Coface prévoit +2,8% de faillites supplémentaires. PME et crédit sous tension.</div><div style="font-size:0.7rem;color:var(--gold);margin-top:5px;">→ Éviter small caps et obligations haut risque</div></div>
+    </div>
+  </div>
+</div>
+</section>
+</body>
+</html>
